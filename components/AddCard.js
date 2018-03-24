@@ -5,10 +5,11 @@ import {connect} from 'react-redux';
 import TextButton from './TextButton';
 import styles from '../util/styles';
 import {addDeck} from '../util/api';
-import {addDeck as addNewDeck, prepareForAddingDeck} from '../actions';
+import {addDeck as addNewDeck} from '../actions';
 
-class NewDeck extends Component {
+class AddCard extends Component {
   state = {
+    showLoader: false,
     newDeckName: '',
     hasError: false,
     response:{}
@@ -39,40 +40,41 @@ class NewDeck extends Component {
                       questions:[]
                     };
     
-    this.props.notifyAddingDeck();
+    this.setState({showLoader:true});
     
     addDeck(newDeck)
       .then(response => {
         this.props.addDeck(newDeck);
-        this.refs.nameInput.clear();
         this.props.navigation.goBack();
       });
+    
+    
   }
 
   render() {
-    const {hasError} = this.state;
-    const {isDeckBeingAdded} = this.props;
+    const {showLoader, hasError} = this.state;
 
-    if(isDeckBeingAdded) {
+    if(showLoader) {
       return <AppLoading />;
     }
 
     return (
       <KeyboardAvoidingView style={styles.mainContainer} contentContainerStyle={styles.mainContainer} behavior='position'>
-        <View style={[styles.top, {flex:2}]}>
-          <Text style={styles.deckTitle}>What is the title of your new deck?</Text>
-        </View>
-        <View style={styles.bottom}>
-          <View>
-            <TextInput
+        <View style={[styles.top, {flex:2, alignItems:'stretch'}]}>
+          <TextInput
               style={styles.inputText}
               onChangeText={this.textInputChange}
               value={this.state.newDeckName}
               ref={'nameInput'}
             />
-            {
-              hasError && <Text style={styles.errorMsg}>Invalid deck name</Text>
-            }
+          {
+            hasError && <Text style={styles.errorMsg}>Invalid deck name</Text>
+          }
+        </View>
+        <View style={styles.bottom}>
+          <View>
+            
+            
           </View>
           <TextButton onPress={this.submitForm}>Submit</TextButton>
         </View>  
@@ -81,17 +83,12 @@ class NewDeck extends Component {
   }
 }
 
-function mapStateToProps({appState}){
-  return {
-    isDeckBeingAdded: appState.isDeckBeingAdded
-  }
-}
+
 
 function mapDispatchToProps(dispatch){
   return {
-    addDeck: (deck)=> dispatch(addNewDeck(deck)),
-    notifyAddingDeck: () => dispatch(prepareForAddingDeck())
+    addDeck: (deck)=> dispatch(addNewDeck(deck))
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(NewDeck);
+export default connect(null,mapDispatchToProps)(AddCard);

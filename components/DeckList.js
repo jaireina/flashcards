@@ -4,7 +4,7 @@ import {AppLoading} from 'expo';
 import {connect} from 'react-redux';
 
 import DeckSummary from './DeckSummary';
-import {getDecks} from '../util/api';
+import {getDecks, removeAll} from '../util/api';
 import {receiveDecks} from '../actions';
 import {print} from '../util/helpers';
 
@@ -16,6 +16,7 @@ class DeckList extends Component {
   };
 
   componentDidMount(){
+    //removeAll();
     getDecks()
       .then(results => {
         this.setState({isReady: true});
@@ -42,6 +43,10 @@ class DeckList extends Component {
       return <AppLoading />
     }
 
+    if(decks.length === 0){
+      return <Text style={styles.msg}>It seems like you don't have any decks. Try adding a new one.</Text>
+    }
+
     return (
       <View style={styles.container}>
         <FlatList
@@ -65,6 +70,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#e76e63',
     margin: 10,
     flex: 1
+  },
+  msg:{
+    fontSize: 20,
+    padding: 30
   }
 })
 

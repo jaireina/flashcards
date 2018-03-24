@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {black, brown, blue, white} from "../util/colors";
+import {black, brown, blue, white, red, gray} from "../util/colors";
 
 export default styles = StyleSheet.create({
   mainContainer: { 
@@ -47,5 +47,13 @@ export default styles = StyleSheet.create({
     backgroundColor: white,
     borderColor: black,
     color: black
-  }
+  },
+  errorMsg: {
+    color: red,
+    fontSize: 16
+  },
+  inputText: {
+    height: 40, 
+    borderColor: gray, 
+    borderWidth: 1}
 })

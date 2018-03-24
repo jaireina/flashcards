@@ -10,6 +10,21 @@ import {blue, brown, white, black} from './util/colors';
 import DeckList from './components/DeckList';
 import DeckDetail from './components/DeckDetail';
 import NewDeck from './components/NewDeck';
+import AddCard from './components/AddCard';
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  headerStyle: {
+    backgroundColor: black, 
+    height: 40,
+    padding: 0,
+    margin: 0
+  }
+});
+
 
 const Tabs = TabNavigator({
   Decks: {
@@ -49,10 +64,16 @@ const MainNavigator = StackNavigator({
       headerStyle: styles.headerStyle ,
       title: `${navigation.state.params.deck.title}`
     })
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: ({navigation}) => ({
+      headerTintColor: white,
+      headerStyle: styles.headerStyle ,
+      title: `Add Card`
+    })
   }
-},{    
-  // headerMode: 'none',
-});
+},{});
 
 export default class App extends React.Component {
   render() {
@@ -66,15 +87,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  headerStyle: {
-    backgroundColor: black, 
-    height: 40,
-    padding: 0,
-    margin: 0
-  }
-});

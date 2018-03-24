@@ -4,19 +4,7 @@ import { FLASHCARDS_STORAGE_KEY } from './settings'
 export function getDecks(){
   return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
     .then(results => {
-      if(results === null){
-        AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify([]));
-        return [{"id":'firstdeck',"title":"test","questions":[{
-          question: 'What is React?',
-          answer: 'A library for managing user interfaces'
-        },
-        {
-          question: 'Where do you make Ajax requests in React?',
-          answer: 'The componentDidMount lifecycle event'
-        }]}];
-      }else{
-        return JSON.parse(results);
-      }
+      return results===null ? []:JSON.parse(results);
     });
 }
 
@@ -25,11 +13,14 @@ export function getDeck(id){
     .then(results=> results[id]);
 }
 
+export function addDeck(newDeck){
+  return getDecks()
+    .then(decks => AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify([...decks, newDeck])) )
+    .catch(err => alert('There was an error. Please try again later.'));
+}
 
-export function addDeck ({ entry, key }) {
-  return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify({
-    [key]: entry
-  }))
+export function removeAll(){
+  return AsyncStorage.clear();
 }
 
 //TODO
