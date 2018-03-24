@@ -23,10 +23,10 @@ class DeckList extends Component {
       });
   }
   
-  onDeckTouch = (key)=>{
+  onDeckTouch = (deck)=>{
     this.props.navigation.navigate(
       'DeckDetail',
-      {deckId: key}
+      {deck} 
     )
   } 
 

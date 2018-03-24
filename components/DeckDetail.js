@@ -1,43 +1,50 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {AppLoading} from 'expo';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
-import {black, brown, blue} from "../util/colors";
+import TextButton from './TextButton';
+import styles from '../util/styles';
 
 class DeckDetail extends Component {
+  state = {
+    deck: {}
+  }
+
+  componentDidMount(){
+    const deckParam = this.props.navigation.state.params.deck;
+    const deck = this.props.decks.find(deck => deck.id === deckParam.id);
+    this.setState({deck});
+  }
+
   render() {
-    const {deck} = this.props;
+    
+    const {deck} = this.state;
+
+    if(deck.id===undefined) {
+      return <AppLoading />;
+    }
 
     return (
-      <View style={styles.container}>
-        <Text>Test {this.props.deckId}</Text>
+      <View style={styles.mainContainer}>
+        <View style={styles.top}>
+          <Text style={styles.deckTitle}>{deck.title}</Text>
+          <Text style={styles.deckSubtitle}>{deck.questions.length} Cards</Text>
+        </View>
+        <View style={styles.bottom}>
+          <TextButton style={styles.inverseButton}>Add Card</TextButton>
+          <TextButton>Start Quiz</TextButton>
+        </View>
       </View>
-    )
+    ) 
   }
 }
 
-const styles = StyleSheet.create({
-  container: { 
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: blue,
-    borderWidth: 2,
-    borderRadius: 5,
-    marginTop: 5,
-    marginBottom: 5,
-    marginRight: 10,
-    marginLeft: 10,
-    paddingTop: 15,
-    paddingBottom: 15
-  },
-  title: {
-    fontSize: 20,
-    color: black
-  },
-  subtitle: {
-    fontSize: 15,
-    color: brown
-  }
-})
 
-export default DeckDetail;
+
+function mapStateToProps({decks}){
+  return {
+    decks 
+  }
+}
+
+export default connect(mapStateToProps)(DeckDetail);

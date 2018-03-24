@@ -8,12 +8,14 @@ class DeckSummary extends Component {
     const {deck} = this.props;
 
     return (
-      <TouchableOpacity onPress={()=>this.props.onPress(deck.id)} style={styles.container}>
+      <TouchableOpacity 
+        onPress={()=>this.props.onPress(deck)} 
+        style={styles.container}>
         <Text style={styles.title}>
           {deck.title}
         </Text>
         <Text style={styles.subtitle}>
-          {deck.questions.length}
+          {deck.questions.length} Cards
         </Text>
       </TouchableOpacity>
     )

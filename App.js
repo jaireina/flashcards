@@ -9,6 +9,7 @@ import reducers from './reducers'
 import {blue, brown, white, black} from './util/colors';
 import DeckList from './components/DeckList';
 import DeckDetail from './components/DeckDetail';
+import NewDeck from './components/NewDeck';
 
 const Tabs = TabNavigator({
   Decks: {
@@ -18,7 +19,7 @@ const Tabs = TabNavigator({
     }
   },
   NewDeck: {
-    screen: DeckList,
+    screen: NewDeck,
     navigationOptions:{
       tabBarLabel: 'NEW DECK'
     }
@@ -43,10 +44,11 @@ const MainNavigator = StackNavigator({
   },
   DeckDetail: {
     screen: DeckDetail,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTintColor: white,
-      headerStyle: {backgroundColor: black}
-    }
+      headerStyle: styles.headerStyle ,
+      title: `${navigation.state.params.deck.title}`
+    })
   }
 },{    
   // headerMode: 'none',
@@ -69,4 +71,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  headerStyle: {
+    backgroundColor: black, 
+    height: 40,
+    padding: 0,
+    margin: 0
+  }
 });
