@@ -18,7 +18,10 @@ class DeckDetail extends Component {
   }
 
   handleAddCard = ()=>{
-    this.props.navigation.navigate('AddCard');
+    this.props.navigation.navigate(
+      'AddCard',
+      {deck: this.state.deck}
+    );
   }
 
   render() {

@@ -1,6 +1,7 @@
 import {
   RECEIVE_DECKS, 
-  ADD_DECK
+  ADD_DECK,
+  ADD_CARD
 } from '../actions';
 
 const initialState = [
@@ -37,6 +38,11 @@ function decks_reducer(state=initialState, action){
       return action.decks;
     case ADD_DECK:
       return [...state, action.deck];
+    case ADD_CARD:
+      const deckIndex = state.findIndex(el => el.id === action.deckId);
+      const newState = [...state];
+      newState[deckIndex].questions.push(action.card);
+      return [...newState];
     default:
       return state;
   }

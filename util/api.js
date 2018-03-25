@@ -23,6 +23,16 @@ export function removeAll(){
   return AsyncStorage.clear();
 }
 
+export function addCard(deckId, card){
+  return getDecks()
+    .then(decks => {
+      const index = decks.findIndex(el=>el.id === deckId);
+      decks[index].questions.push(card);
+      return AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks));
+    })
+    .catch(err => alert(err));
+}
+
 //TODO
 export function removeEntry (key) {
   return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)

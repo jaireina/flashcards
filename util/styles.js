@@ -53,7 +53,9 @@ export default styles = StyleSheet.create({
     fontSize: 16
   },
   inputText: {
-    height: 40, 
+    height: 50, 
     borderColor: gray, 
-    borderWidth: 1}
+    borderWidth: 1,
+    borderRadius: 5
+  }
 })

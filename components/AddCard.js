@@ -4,47 +4,58 @@ import {Text, View, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'rea
 import {connect} from 'react-redux';
 import TextButton from './TextButton';
 import styles from '../util/styles';
-import {addDeck} from '../util/api';
-import {addDeck as addNewDeck} from '../actions';
+import { addCard } from '../util/api';
+import { addCard as addNewCard, prepareForAddingCard} from '../actions';
 
 class AddCard extends Component {
   state = {
-    showLoader: false,
-    newDeckName: '',
-    hasError: false,
-    response:{}
+    question: '',
+    answer: '',
+    errors: {
+      question: false,
+      answer: false
+    }
   }
 
-  textInputChange = (text)=>{
-    const hasError = !this.isInputValid(text);
-    this.setState(()=>({newDeckName:text, hasError}));
+  textInputChange = (field, text)=>{
+    this.setState(previousState => (
+      {
+        ...previousState,
+        [field]:text, 
+        errors:{
+          ...previousState.errors,
+          [field]: !this.isInputValid(field, text)
+        }
+      }
+    ));
   }
 
-  isInputValid = (text, showError=false)=>{
+  isInputValid = (field, text, showError=false)=>{
     const hasError = text.trim()==='';
     if(showError){
-      this.setState({hasError});
+      this.setState({errors:{[field]:hasError}});
     }
     return !hasError;
   }
   
   submitForm = () =>{
-    const {newDeckName} = this.state;
+    const {question, answer} = this.state;
     
-    if(!this.isInputValid(newDeckName, true)){
+    if( !this.isInputValid('question', question, true) 
+        || !this.isInputValid('answer', answer, true) ){
       return;
     }
 
-    const newDeck = { id: (new Date()).getTime(), 
-                      title: newDeckName, 
-                      questions:[]
-                    };
-    
-    this.setState({showLoader:true});
-    
-    addDeck(newDeck)
+    const newQuestion = {question, answer};
+    const {deck} = this.props.navigation.state.params;
+
+    this.props.notifyAddingCard();
+
+    addCard(deck.id, newQuestion)
       .then(response => {
-        this.props.addDeck(newDeck);
+        this.props.addNewCard(deck.id, newQuestion);
+        this.refs.questionInput.clear();
+        this.refs.answerInput.clear();
         this.props.navigation.goBack();
       });
     
@@ -52,30 +63,41 @@ class AddCard extends Component {
   }
 
   render() {
-    const {showLoader, hasError} = this.state;
+    const {errors} = this.state;
+    const {showLoader} = this.props;
 
     if(showLoader) {
       return <AppLoading />;
     }
 
     return (
-      <KeyboardAvoidingView style={styles.mainContainer} contentContainerStyle={styles.mainContainer} behavior='position'>
+      <KeyboardAvoidingView style={styles.mainContainer} contentContainerStyle={styles.mainContainer} behavior='padding'>
         <View style={[styles.top, {flex:2, alignItems:'stretch'}]}>
           <TextInput
               style={styles.inputText}
-              onChangeText={this.textInputChange}
-              value={this.state.newDeckName}
-              ref={'nameInput'}
+              onChangeText={(text)=>this.textInputChange('question', text)}
+              value={this.state.question}
+              ref={'questionInput'}
+              placeholder='Question'
             />
           {
-            hasError && <Text style={styles.errorMsg}>Invalid deck name</Text>
+            errors.question && <Text style={styles.errorMsg}>Invalid question format</Text>
+          }
+
+          <View style={{height: 30}} />
+
+          <TextInput
+              style={styles.inputText}
+              onChangeText={(text)=>this.textInputChange('answer', text)}
+              value={this.state.answer}
+              ref={'answerInput'}
+              placeholder='Answer'
+            />
+          {
+            errors.answer && <Text style={styles.errorMsg}>Invalid answer format</Text>
           }
         </View>
         <View style={styles.bottom}>
-          <View>
-            
-            
-          </View>
           <TextButton onPress={this.submitForm}>Submit</TextButton>
         </View>  
       </KeyboardAvoidingView>
@@ -83,12 +105,17 @@ class AddCard extends Component {
   }
 }
 
-
-
-function mapDispatchToProps(dispatch){
+function mapStateToProps({appState}){
   return {
-    addDeck: (deck)=> dispatch(addNewDeck(deck))
+    showLoader: appState.isCardBeingAdded
   }
 }
 
-export default connect(null,mapDispatchToProps)(AddCard);
+function mapDispatchToProps(dispatch){
+  return {
+    addNewCard: (deckId, card)=> dispatch(addNewCard(deckId, card)),
+    notifyAddingCard: () => dispatch(prepareForAddingCard())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddCard);

@@ -16,7 +16,7 @@ class DeckList extends Component {
   };
 
   componentDidMount(){
-    //removeAll();
+    // removeAll();
     getDecks()
       .then(results => {
         this.setState({isReady: true});
