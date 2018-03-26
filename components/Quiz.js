@@ -5,6 +5,7 @@ import {StackNavigator, NavigationActions} from 'react-navigation';
 import {connect} from 'react-redux';
 import TextButton from './TextButton';
 import styles from '../util/styles';
+import {clearLocalNotifications, setLocalNotification} from '../util/notifications';
 
 
 function getRandomInt(max) {
@@ -53,6 +54,8 @@ class Quiz extends Component {
       });
     }else{
       this.setState({showResults: true});
+      clearLocalNotifications()
+            .then(setLocalNotification)
     }
 
   }
@@ -118,7 +121,7 @@ class Quiz extends Component {
         {
           showResults ?
             <CardSideView 
-              text={`Results: ${this.correctAnswers}/${deck.questions.length}`}
+              text={`Score: ${this.correctAnswers}/${deck.questions.length}`}
               linkText=""
               />
             :

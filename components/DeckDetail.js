@@ -49,9 +49,15 @@ class DeckDetail extends Component {
           <TextButton 
             style={styles.inverseButton}
             onPress={this.handleAddCard}>Create New Question</TextButton>
-          <TextButton
-            onPress={this.startQuiz}
-            >Start Quiz</TextButton>
+          {
+            deck.questions.length>0?
+              <TextButton
+                onPress={this.startQuiz}
+                >Start Quiz</TextButton>
+              :
+              <View />
+          }
+          
         </View>
       </View>
     ) 

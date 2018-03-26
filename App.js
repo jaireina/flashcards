@@ -12,7 +12,7 @@ import DeckDetail from './components/DeckDetail';
 import NewDeck from './components/NewDeck';
 import AddCard from './components/AddCard';
 import Quiz from './components/Quiz';
-import setLocalNotification from './util/notifications';
+import {setLocalNotification} from './util/notifications';
 
 const styles = StyleSheet.create({
   container: {

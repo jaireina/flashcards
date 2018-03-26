@@ -1,8 +1,31 @@
 import {AsyncStorage} from 'react-native';
 import {Notifications, Permissions} from 'expo';
+import {FLASHCARDS_NOTIFICATION_KEY} from './settings';
+
+export function clearLocalNotifications(){
+  return AsyncStorage.removeItem(FLASHCARDS_NOTIFICATION_KEY)
+    .then( Notifications.cancelAllScheduledNotificationsAsync )
+}
+
+function createNotification(){
+  return {
+    title: 'Do your QUIZ!',
+    body: "👋 Don't forget to do your QUIZ",
+    ios: {
+      sound: true
+    },
+    android:{
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true
+    }
+  }
+}
+
 
 export function setLocalNotification(){
-  AsyncStorage.getItem(NOTIFICATION_KEY)
+  AsyncStorage.getItem(FLASHCARDS_NOTIFICATION_KEY)
     .then(JSON.parse)
     .then(data => {
       
@@ -17,7 +40,6 @@ export function setLocalNotification(){
               tomorrow.setDate(tomorrow.getDate() + 1);
               tomorrow.setHours(20);
               tomorrow.setMinutes(0); 
-              // tomorrow.setMinutes(tomorrow.getMinutes()+1);
 
               Notifications.scheduleLocalNotificationAsync(
                 createNotification(),
@@ -27,7 +49,7 @@ export function setLocalNotification(){
                 }
               )
 
-              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
+              AsyncStorage.setItem(FLASHCARDS_NOTIFICATION_KEY, JSON.stringify(true));
             }
           })
       }
