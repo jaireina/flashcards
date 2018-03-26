@@ -24,6 +24,13 @@ class DeckDetail extends Component {
     );
   }
 
+  startQuiz = () =>{
+    this.props.navigation.navigate(
+      'Quiz',
+      {deckId: this.state.deck.id}
+    );
+  }
+
   render() {
     
     const {deck} = this.state;
@@ -41,8 +48,10 @@ class DeckDetail extends Component {
         <View style={styles.bottom}>
           <TextButton 
             style={styles.inverseButton}
-            onPress={this.handleAddCard}>Add Card</TextButton>
-          <TextButton>Start Quiz</TextButton>
+            onPress={this.handleAddCard}>Create New Question</TextButton>
+          <TextButton
+            onPress={this.startQuiz}
+            >Start Quiz</TextButton>
         </View>
       </View>
     ) 

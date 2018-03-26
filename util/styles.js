@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {black, brown, blue, white, red, gray} from "../util/colors";
+import {black, brown, blue, white, red, gray, green} from "../util/colors";
 
 export default styles = StyleSheet.create({
   mainContainer: { 
@@ -47,6 +47,14 @@ export default styles = StyleSheet.create({
     backgroundColor: white,
     borderColor: black,
     color: black
+  },
+  greenButton: {
+    backgroundColor: green,
+    borderColor: green
+  },
+  redButton: {
+    backgroundColor: red,
+    borderColor: red
   },
   errorMsg: {
     color: red,

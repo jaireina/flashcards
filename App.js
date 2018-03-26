@@ -11,7 +11,8 @@ import DeckList from './components/DeckList';
 import DeckDetail from './components/DeckDetail';
 import NewDeck from './components/NewDeck';
 import AddCard from './components/AddCard';
-
+import Quiz from './components/Quiz';
+import setLocalNotification from './util/notifications';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,10 +73,23 @@ const MainNavigator = StackNavigator({
       headerStyle: styles.headerStyle ,
       title: `Add Card`
     })
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: ({navigation}) => ({
+      headerTintColor: white,
+      headerStyle: styles.headerStyle ,
+      title: `Quiz`
+    })
   }
 },{});
 
 export default class App extends React.Component {
+
+  componentDidMount(){
+    setLocalNotification();
+  }
+
   render() {
     return (
       <Provider store={createStore(reducers)}> 
