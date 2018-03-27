@@ -3,23 +3,20 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {black, brown, blue} from "../util/colors";
 
-class DeckSummary extends Component {
-  render() {
-    const {deck} = this.props;
-
-    return (
-      <TouchableOpacity 
-        onPress={()=>this.props.onPress(deck)} 
-        style={styles.container}>
-        <Text style={styles.title}>
-          {deck.title}
-        </Text>
-        <Text style={styles.subtitle}>
-          {deck.questions.length} Cards
-        </Text>
-      </TouchableOpacity>
-    )
-  }
+function DeckSummary(props){
+  const {deck, onPress} = props;
+  return (
+    <TouchableOpacity 
+      onPress={()=>onPress(deck)} 
+      style={styles.container}>
+      <Text style={styles.title}>
+        {deck.title}
+      </Text>
+      <Text style={styles.subtitle}>
+        {deck.questions.length} Cards
+      </Text>
+    </TouchableOpacity>
+  )
 }
 
 const styles = StyleSheet.create({

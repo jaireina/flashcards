@@ -11,7 +11,7 @@ class DeckDetail extends Component {
     deck: {}
   }
 
-  componentDidMount(){
+  componentWillMount(){
     const deckParam = this.props.navigation.state.params.deck;
     const deck = this.props.decks.find(deck => deck.id === deckParam.id);
     this.setState({deck});
@@ -33,24 +33,24 @@ class DeckDetail extends Component {
 
   render() {
     
-    const {deck} = this.state;
+    const {deck:{id, title, questions}} = this.state;
 
-    if(deck.id===undefined) {
+    if(id===undefined) {
       return <AppLoading />;
     }
 
     return (
       <View style={styles.mainContainer}>
         <View style={styles.top}>
-          <Text style={styles.deckTitle}>{deck.title}</Text>
-          <Text style={styles.deckSubtitle}>{deck.questions.length} Cards</Text>
+          <Text style={styles.deckTitle}>{title}</Text>
+          <Text style={styles.deckSubtitle}>{questions.length} Cards</Text>
         </View>
         <View style={styles.bottom}>
           <TextButton 
             style={styles.inverseButton}
             onPress={this.handleAddCard}>Create New Question</TextButton>
           {
-            deck.questions.length>0?
+            questions.length>0?
               <TextButton
                 onPress={this.startQuiz}
                 >Start Quiz</TextButton>

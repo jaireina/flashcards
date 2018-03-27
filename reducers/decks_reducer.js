@@ -2,7 +2,7 @@ import {
   RECEIVE_DECKS, 
   ADD_DECK,
   ADD_CARD
-} from '../actions';
+} from '../actions/action_types';
 
 const initialState = [
   {

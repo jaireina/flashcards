@@ -30,11 +30,11 @@ class Quiz extends Component {
     visibleAnswer: "",
     showingQuestion: true,
     currentQuestionIndex: -1,
-    showResults: false
+    showResults: false,
+    correctAnswers: 0
   }
 
   componentDidMount(){
-    this.correctAnswers = 0;
     this.iterate();
   }
 
@@ -77,7 +77,9 @@ class Quiz extends Component {
   submitAnswer = (answer)=>{
     const {visibleAnswer, currentQuestion} = this.state;
     if((visibleAnswer === currentQuestion.answer ) == answer){
-      this.correctAnswers++;
+      this.setState(prevState=>({
+        correctAnswers: prevState.correctAnswers+1
+      }));
     }
     this.iterate();
   }
@@ -89,8 +91,13 @@ class Quiz extends Component {
       visibleAnswer: deck.questions[0].answer,
       showingQuestion: true,
       currentQuestionIndex: 0,
-      showResults: false
+      showResults: false,
+      correctAnswers: 0
     });
+  }
+
+  goBackToDeck = () => {
+    this.props.navigation.navigate('DeckDetail',{deck:this.props.deck})
   }
 
   render() {
@@ -100,7 +107,8 @@ class Quiz extends Component {
       showingQuestion, 
       visibleAnswer, 
       currentQuestion,
-      showResults
+      showResults,
+      correctAnswers
     } = this.state;
 
     if(deck.id===undefined) {
@@ -121,7 +129,7 @@ class Quiz extends Component {
         {
           showResults ?
             <CardSideView 
-              text={`Score: ${this.correctAnswers}/${deck.questions.length}`}
+              text={`Score: ${correctAnswers}/${deck.questions.length}`}
               linkText=""
               />
             :
@@ -152,7 +160,7 @@ class Quiz extends Component {
 
                 <TextButton
                   style={[styles.genericButton]}
-                  onPress={()=>this.props.navigation.navigate('Home')}
+                  onPress={this.goBackToDeck}
                   >Back to Deck</TextButton>
               </View>
               :

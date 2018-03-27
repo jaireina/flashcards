@@ -10,8 +10,7 @@ import {addDeck as addNewDeck, prepareForAddingDeck} from '../actions';
 class NewDeck extends Component {
   state = {
     newDeckName: '',
-    hasError: false,
-    response:{}
+    hasError: false
   }
 
   textInputChange = (text)=>{
@@ -44,8 +43,14 @@ class NewDeck extends Component {
     addDeck(newDeck)
       .then(response => {
         this.props.addDeck(newDeck);
-        this.refs.nameInput.clear();
-        this.props.navigation.goBack();
+        this.setState(prevState =>{
+          this.refs.nameInput.clear();
+          return {
+            newDeckName: '',
+            hasError: false
+          };
+        });
+        this.props.navigation.navigate('DeckDetail',{deck: newDeck});
       });
   }
 

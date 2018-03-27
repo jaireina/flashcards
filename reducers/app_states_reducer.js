@@ -3,7 +3,7 @@ import {
   ADD_DECK,
   PREPARE_TO_ADD_CARD,
   ADD_CARD
-} from '../actions';
+} from '../actions/action_types';
 
 const initialState = {
   isDeckBeingAdded: false,
